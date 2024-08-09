@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 메인 페이지 라우트
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Market_Vision' });
+    res.render('index', { title: 'MarketVision' });
 });
 
 app.listen(port, () => {
