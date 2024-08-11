@@ -1,0 +1,14 @@
+{
+  "name": "marketvision",
+  "version": "1.0.0",
+  "description": "Node.js를 활용한 경제분석 서비스 개발",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
