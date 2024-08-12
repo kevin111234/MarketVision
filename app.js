@@ -9,6 +9,7 @@ dotenv.config();
 const app = express();
 app.set('port', process.env.PORT || 8000);
 
+app.use(morgan('dev'));
 
 app.get('/', (req, res) =>{
   res.send('Hello, Express');
