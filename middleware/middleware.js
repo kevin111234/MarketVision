@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
 
-const config = require('./config/configenv');
+const config = require('../config/configenv');
 
 module.exports = function(app) {
   app.use(morgan('dev'));

@@ -1,5 +1,6 @@
 const express = require('express');
 const nunjucks = require('nunjucks');
+const { sequelize } = require('./models');
 // required local files
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
@@ -19,6 +20,15 @@ nunjucks.configure('views', {
 });
 // middleware
 applyMiddleware(app);
+
+// database
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log('database 연결 성공');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 // routing
 app.use('/', indexRouter);
