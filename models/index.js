@@ -8,4 +8,6 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.sequelize = sequelize;
 
+// 여기에 테이블 정보 삽입
+
 module.exports = db;
