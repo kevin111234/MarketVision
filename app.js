@@ -4,6 +4,7 @@ const { sequelize } = require('./models');
 // required local files
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
+const apiRouter = require('./routes/api');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
 
@@ -32,6 +33,7 @@ sequelize.sync({ force: false })
 
 // routing
 app.use('/', indexRouter);
+app.use('api/', apiRouter);
 
 // error handler
 app.use(errorHandler.notFound);
