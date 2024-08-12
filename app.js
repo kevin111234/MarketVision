@@ -4,20 +4,26 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const path = require('path');
+const nunjucks = require('nunjucks')
 
 const app = express();
 // .env 설정 불러오기
 dotenv.config();
 
-// 기본적인 세팅 (포트, view)
-app.set('port', process.env.PORT || 8000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
 // 라우팅 호출
 const indexRouter = require('./routes');
 
+// port, view 설정
+app.set('port', process.env.PORT || 8000);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
+nunjucks.configure('views', {
+  express: app,
+  watch: true,
+});
+
 app.use(morgan('dev'));
+
 // 요청 응답
 app.use('/', indexRouter);
 
