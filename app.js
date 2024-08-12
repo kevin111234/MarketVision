@@ -18,7 +18,7 @@ nunjucks.configure('views', {
   express: app,
   watch: true,
 });
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
 
 // 요청 응답
