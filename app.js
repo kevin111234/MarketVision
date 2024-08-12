@@ -6,10 +6,9 @@ const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks')
 
-const app = express();
 // .env 설정 불러오기
 dotenv.config();
-
+const app = express();
 // 라우팅 호출
 const indexRouter = require('./routes');
 
