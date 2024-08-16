@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { User } = require('../models'); // User 모델 가져오기
 
@@ -24,7 +23,10 @@ router.get('/signup', (req, res) => {
 
 // 회원가입 처리
 router.post('/signup', async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;  // name 필드를 받아옴
+  if (!name) {
+    return res.status(400).send('Name is required');  // 이름이 없는 경우 오류 반환
+  }
   try {
     // 이메일 중복 체크
     const existingUser = await User.findOne({ where: { email } });
@@ -39,7 +41,7 @@ router.post('/signup', async (req, res, next) => {
     const newUser = await User.create({
       email,
       password: hashedPassword,
-      name: req.body.name || null, // 이름 필드는 선택적
+      name,  // 이름 필드 저장
     });
 
     // 회원가입 성공 후 로그인 페이지로 리다이렉트
