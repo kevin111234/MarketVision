@@ -1,17 +1,20 @@
 const express = require('express');
 const nunjucks = require('nunjucks');
 const { sequelize } = require('./models');
+const passport = require('passport');
 // required local files
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
+const passportConfig = require('./passport');
 
 const app = express();
 
 // .env settings
 app.set('port', config.port);
+passportConfig();
 
 // view setting
 app.set('view engine', 'html');

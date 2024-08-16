@@ -5,6 +5,7 @@ const session = require('express-session');
 const path = require('path');
 
 const config = require('../config/configenv');
+const passport = require('passport');
 
 module.exports = function(app) {
   app.use(morgan('dev'));
@@ -19,4 +20,6 @@ module.exports = function(app) {
     },
     saveUninitialized: true,
   }));
+  app.use(passport.initialize());
+  app.use(passport.session());
 };
