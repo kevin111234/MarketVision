@@ -1,11 +1,11 @@
 const express = require('express');
 const nunjucks = require('nunjucks');
 const { sequelize } = require('./models');
-const passport = require('passport');
 // required local files
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const authRouter = require('./routes/auth');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
 const passportConfig = require('./passport');
@@ -37,6 +37,7 @@ sequelize.sync({ force: false })
 // routing
 app.use('/', indexRouter);
 app.use('api/', apiRouter);
+app.use('/auth', authRouter);
 
 // error handler
 app.use(errorHandler.notFound);
