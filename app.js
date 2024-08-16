@@ -26,12 +26,13 @@ nunjucks.configure('views', {
 applyMiddleware(app);
 
 // database
-sequelize.sync({ force: false })
+
+sequelize.sync({ force: false })  // force: true로 설정하면 기존 테이블이 삭제되고 다시 생성됩니다.
   .then(() => {
-    console.log('database 연결 성공');
+    console.log('Database & tables created!');
   })
   .catch((err) => {
-    console.error(err);
+    console.error('Unable to create tables:', err);
   });
 
 // routing
