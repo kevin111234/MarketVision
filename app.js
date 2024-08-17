@@ -23,6 +23,7 @@ nunjucks.configure('views', {
   watch: true,
 });
 // middleware
+app.use(express.urlencoded({ extended: true })); 
 applyMiddleware(app);
 
 // database

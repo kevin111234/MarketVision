@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/user');
+const { User } = require('../models');  // 'User' 모델을 'models/index.js'에서 가져오기
 const bcrypt = require('bcrypt');
 
 module.exports = (passport) => {
@@ -21,4 +21,14 @@ module.exports = (passport) => {
       return done(err);
     }
   }));
+
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser((id, done) => {
+    User.findByPk(id)
+      .then(user => done(null, user))
+      .catch(err => done(err));
+  });
 };
