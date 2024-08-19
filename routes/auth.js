@@ -17,7 +17,7 @@ router.post('/signup', async (req, res, next) => {
       return res.status(400).json({ message: '이미 존재하는 이메일입니다.' });
     }
     const newUser = await User.create({ email, password, name });
-    res.status(201).json({ message: '회원가입이 완료되었습니다.', userId: newUser.id });
+    res.redirect('/');
   } catch (error) {
     next(error);
   }
@@ -40,7 +40,7 @@ router.post('/login', (req, res, next) => {
       if (err) {
         return next(err);
       }
-      return res.json({ message: '로그인 성공', userId: user.id });
+      res.redirect('/');
     });
   })(req, res, next);
 });
