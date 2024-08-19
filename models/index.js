@@ -11,6 +11,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 });
 
 // 모델 불러오기
+const User = require('./user')(sequelize);  // 수정된 방식으로 User 모델 불러오기
 const Stock = require('./Stock')(sequelize);
 const HistoricalStockData = require('./HistoricalStockData')(sequelize);
 const StockIndex = require('./StockIndex')(sequelize);
@@ -28,6 +29,8 @@ HistoricalCommodityData.belongsTo(Commodity, { foreignKey: 'commodity_id', onDel
 // 내보내기
 module.exports = {
   sequelize,
+  Sequelize,
+  User,
   Stock,
   HistoricalStockData,
   StockIndex,

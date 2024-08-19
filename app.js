@@ -5,13 +5,17 @@ const { sequelize } = require('./models');
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const authRoutes = require('./routes/auth');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
+const passportConfig = require('./passport');
 
 const app = express();
 
 // .env settings
 app.set('port', config.port);
+passportConfig();
+require('./passport')(app);
 
 // view setting
 app.set('view engine', 'html');
@@ -19,21 +23,23 @@ nunjucks.configure('views', {
   express: app,
   watch: true,
 });
+
 // middleware
 applyMiddleware(app);
 
 // database
-sequelize.sync({ force: false })
+sequelize.sync({ force: false })  // force: true로 설정하면 기존 테이블이 삭제되고 다시 생성됩니다.
   .then(() => {
-    console.log('database 연결 성공');
+    console.log('Database & tables created!');
   })
   .catch((err) => {
-    console.error(err);
+    console.error('Unable to create tables:', err);
   });
 
 // routing
 app.use('/', indexRouter);
 app.use('api/', apiRouter);
+app.use('/auth', authRoutes);
 
 // error handler
 app.use(errorHandler.notFound);
