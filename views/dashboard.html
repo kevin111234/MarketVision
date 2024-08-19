@@ -1,25 +1,67 @@
 {% extends 'layout.html' %}
-
 {% block title %}MarketVision 메인 화면{% endblock %}
-
 {% block content %}
+
 <div class="container">
   <div class="row">
     <div class="col-md-8 main-content">
       <h1>Dashboard</h1>
-      <!-- 메인 콘텐츠 영역 -->
-      <p>여기에 대시보드 콘텐츠를 추가하세요.</p>
+      
+      <!-- 그래프를 표시할 영역 -->
+      <div id="stockIndexGraph">
+        <!-- 데이터가 없을 경우 표시할 메시지 -->
+        <p id="noDataMessage" style="display: none;">현재 표시할 주식 지표 데이터가 없습니다.</p>
+      </div>
+
+      <!-- 여기에 다른 대시보드 콘텐츠를 추가하세요. -->
     </div>
+
     <div class="col-md-4">
       <h2>Latest News</h2>
-      <ul class="list-group list-group-numbered">
-        {% for item in news %}
-          <li class="list-group-item">
-            <a class="list-group-item-action" href="{{ item.link }}" target="_blank">{{ item.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+      {% if news and news|length > 0 %}
+        <ul class="list-group">
+          {% for item in news %}
+            <li class="list-group-item">
+              <a href="{{ item.link }}" class="list-group-item-action" target="_blank">
+                {{ item.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>현재 표시할 뉴스가 없습니다.</p>
+      {% endif %}
     </div>
   </div>
 </div>
+
+<!-- Plotly.js 라이브러리 추가 -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- 그래프 렌더링 스크립트 -->
+<script>
+  // 서버에서 전달받은 그래프 데이터
+  var graphDataJson = '{{ graphDataJson | safe }}';
+  
+  if (graphDataJson !== 'null') {
+    var graphData = JSON.parse(graphDataJson);
+    if (graphData && graphData.graph) {
+      // JSON 문자열을 JavaScript 객체로 파싱
+      var figure = JSON.parse(graphData.graph);
+      
+      // Plotly를 사용하여 그래프 렌더링
+      Plotly.newPlot('stockIndexGraph', figure.data, figure.layout);
+    } else {
+      showNoDataMessage();
+    }
+  } else {
+    showNoDataMessage();
+  }
+
+  function showNoDataMessage() {
+    // 데이터가 없을 경우 메시지 표시
+    document.getElementById('noDataMessage').style.display = 'block';
+  }
+</script>
+
 {% endblock %}
