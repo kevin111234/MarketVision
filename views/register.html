@@ -1,20 +1,30 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h2>Register</h2>
-<form action="/auth/signup" method="post">
-  <div>
-    <label for="name">Name:</label>
-    <input type="text" name="name" id="name" required>
-  </div>
-  <div>
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email" required>
-  </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required>
-  </div>
-    <button type="submit">Register</button>
-</form>
+<h2 class="text-center">회원가입</h2>
+<div class="container" style="margin: 0 auto; width: 50%;">
+  <form action="/auth/signup" method="post">
+    <div class="mb-3 row">
+      <label for="name" class="col-sm-2 col-form-label">이름:</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" name="name" id="name" required>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="email" class="col-sm-2 col-form-label">이메일:</label>
+      <div class="col-sm-9">
+        <input type="email" class="form-control" name="email" id="email" required>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="password" class="col-sm-2 col-form-label">비밀번호:</label>
+      <div class="col-sm-9">
+        <input type="password" class="form-control" name="password" id="password" required>
+      </div>
+    </div>
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary">회원가입하기</button>
+    </div>
+  </form>
+</div>
 {% endblock %}
