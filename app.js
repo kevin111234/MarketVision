@@ -5,7 +5,8 @@ const { sequelize } = require('./models');
 const config = require('./config/configenv');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
-const authRoutes = require('./routes/auth');
+const authRouter = require('./routes/auth');
+const dashboardRouter = require('./routes/dashboard');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
 const passportConfig = require('./passport');
@@ -15,7 +16,6 @@ const app = express();
 // .env settings
 app.set('port', config.port);
 passportConfig();
-require('./passport')(app);
 
 // view setting
 app.set('view engine', 'html');
@@ -39,7 +39,8 @@ sequelize.sync({ force: false })  // force: true로 설정하면 기존 테이�
 // routing
 app.use('/', indexRouter);
 app.use('api/', apiRouter);
-app.use('/auth', authRoutes);
+app.use('/auth', authRouter);
+app.use('/dashboard', dashboardRouter)
 
 // error handler
 app.use(errorHandler.notFound);
