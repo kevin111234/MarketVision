@@ -3,7 +3,7 @@
 {% block content %}
 <h2 class="text-center">회원가입</h2>
 <div class="container" style="margin: 0 auto; width: 50%;">
-  <form action="/auth/signup" method="post">
+  <form id="signupForm">
     <div class="mb-3 row">
       <label for="name" class="col-sm-2 col-form-label">이름:</label>
       <div class="col-sm-9">
@@ -27,4 +27,36 @@
     </div>
   </form>
 </div>
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
+
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        // 오류 발생 시 팝업 메시지 표시
+        alert(result.message || '회원가입에 실패했습니다.');
+      } else {
+        // 성공 시 리디렉션
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('서버에 문제가 발생했습니다. 나중에 다시 시도하세요.');
+    }
+  });
+</script>
 {% endblock %}
