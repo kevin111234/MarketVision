@@ -27,5 +27,6 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: "mysql"
-  }
+  },
+  cookieSecret: process.env.COOKIE_SECRET || 'default-secret-key'
 }
