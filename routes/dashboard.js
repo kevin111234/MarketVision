@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const newsUrl = 'http://localhost:8000/us-stock-news'
-const indexUrl1 = 'http://localhost:8000/stock-index/1/last-three-months'
-const indexUrl2 = 'http://localhost:8000/stock-index/3/last-three-months'
-const indexUrl3 = 'http://localhost:8000/stock-index/4/last-three-months'
-const indexUrl4 = 'http://localhost:8000/stock-index/5/last-three-months'
+const newsUrl = 'http://marketvision-api:8000/us-stock-news'
+const indexUrl1 = 'http://marketvision-api:8000/stock-index/1/last-three-months'
+const indexUrl2 = 'http://marketvision-api:8000/stock-index/3/last-three-months'
+const indexUrl3 = 'http://marketvision-api:8000/stock-index/4/last-three-months'
+const indexUrl4 = 'http://marketvision-api:8000/stock-index/5/last-three-months'
 
 router.get('/', async (req, res) => {
   let news = [];
