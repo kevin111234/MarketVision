@@ -11,21 +11,23 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', async (req, res, next) => {
   const { email, password, name } = req.body;
+  
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: '이미 존재하는 이메일입니다.' });
     }
     const newUser = await User.create({ email, password, name });
-    res.redirect('/');
+    res.status(200).json({ message: '회원가입 성공', redirectUrl: '/' });  // 리디렉션 URL을 클라이언트에 전송
   } catch (error) {
+    console.error('회원가입 중 오류 발생:', error);
     next(error);
   }
 });
 
 // 로그인 라우트
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login');  // login.html 파일을 렌더링
 });
 
 router.post('/login', (req, res, next) => {
@@ -34,13 +36,13 @@ router.post('/login', (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      return res.status(400).json(info);
+      return res.status(400).json({ message: info.message || '로그인에 실패했습니다.' });
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
-      res.redirect('/');
+      res.status(200).json({ message: '로그인 성공', redirectUrl: '/' });  // 리디렉션 URL을 클라이언트에 전송
     });
   })(req, res, next);
 });

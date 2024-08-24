@@ -33,10 +33,15 @@ module.exports = (sequelize) => {
 
   // 비밀번호 해싱을 위한 Hook 설정
   User.beforeCreate(async (user, options) => {
-    if (user.password) {
-      const bcrypt = require('bcrypt');
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
+    try {
+      if (user.password) {
+        const bcrypt = require('bcrypt');
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    } catch (error) {
+      console.error('비밀번호 해싱 중 오류 발생:', error);  // 에러 로그 추가
+      throw error;  // 에러 발생 시 throw하여 상위에서 잡히도록 함
     }
   });
 

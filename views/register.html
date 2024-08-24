@@ -51,7 +51,8 @@
         alert(result.message || '회원가입에 실패했습니다.');
       } else {
         // 성공 시 리디렉션
-        window.location.href = '/';
+        alert(result.message);  // 성공 메시지 표시
+        window.location.href = result.redirectUrl;
       }
     } catch (error) {
       console.error('Error:', error);

@@ -5,10 +5,6 @@ const https = require('https');
 require('dotenv').config();
 
 const newsUrl = process.env.NEWS_URL;
-const indexUrl1 = process.env.INDEX_URL1;
-const indexUrl2 = process.env.INDEX_URL2;
-const indexUrl3 = process.env.INDEX_URL3;
-const indexUrl4 = process.env.INDEX_URL4;
 const exchangeRateUrl = process.env.EXCHANGE_RATE_URL;
 
 // HTTPS 에이전트 설정
@@ -19,47 +15,24 @@ const agent = new https.Agent({
 
 router.get('/', async (req, res) => {
   let news = [];
-  let graphData1 = null, graphData2 = null, graphData3 = null, graphData4 = null;
+  let sp500Graph = null;
   let exchangeRate = null;
 
   try {
-    // FastAPI에서 뉴스 데이터를 가져옴
+    // S&P 500 그래프 데이터를 FastAPI에서 가져옴 (3개월 데이터를 기본으로 가져옴)
+    const graphResponse = await axios.get(`${process.env.API_BASE_URL}/stock-index/4/data?months=1`, { httpsAgent: agent });
+    sp500Graph = graphResponse.data.graph;
+  } catch (error) {
+    console.error('Error fetching S&P 500 graph data:', error.message);
+  }
+
+  try {
     const newsResponse = await axios.get(newsUrl, { httpsAgent: agent });
     news = newsResponse.data;
   } catch (error) {
     console.error('Error fetching news:', error.message);
   }
 
-  // 각 인덱스에 대한 그래프 데이터를 개별적으로 가져오기
-  try {
-    const graphResponse1 = await axios.get(indexUrl1, { httpsAgent: agent });
-    graphData1 = graphResponse1.data;
-  } catch (error) {
-    console.error('Error fetching graph data for index 1:', error.message);
-  }
-
-  try {
-    const graphResponse2 = await axios.get(indexUrl2, { httpsAgent: agent });
-    graphData2 = graphResponse2.data;
-  } catch (error) {
-    console.error('Error fetching graph data for index 2:', error.message);
-  }
-
-  try {
-    const graphResponse3 = await axios.get(indexUrl3, { httpsAgent: agent });
-    graphData3 = graphResponse3.data;
-  } catch (error) {
-    console.error('Error fetching graph data for index 3:', error.message);
-  }
-
-  try {
-    const graphResponse4 = await axios.get(indexUrl4, { httpsAgent: agent });
-    graphData4 = graphResponse4.data;
-  } catch (error) {
-    console.error('Error fetching graph data for index 4:', error.message);
-  }
-
-  // FastAPI에서 환율 데이터를 가져옴
   try {
     const exchangeRateResponse = await axios.get(exchangeRateUrl, { httpsAgent: agent });
     exchangeRate = exchangeRateResponse.data.exchange_rate;
@@ -67,14 +40,53 @@ router.get('/', async (req, res) => {
     console.error('Error fetching exchange rate:', error.message);
   }
 
-  // dashboard 페이지 렌더링, 뉴스와 그래프 데이터, 환율 정보를 전달
   res.render('dashboard', { 
     news, 
-    graphData1: JSON.stringify(graphData1),
-    graphData2: JSON.stringify(graphData2),
-    graphData3: JSON.stringify(graphData3),
-    graphData4: JSON.stringify(graphData4),
-    exchangeRate
+    exchangeRate,
+    sp500Graph
+  });
+});
+
+router.get('/market-indicators', async (req, res) => {
+  let Graph1 = null, Graph2 = null, Graph3 = null, Graph4 = null;
+
+  try {
+    // NASDAQ Composite
+    const graphResponse1 = await axios.get(`${process.env.API_BASE_URL}/stock-index/1/data?months=3`, { httpsAgent: agent });
+    Graph1 = graphResponse1.data.graph;
+  } catch (error) {
+    console.error('Error fetching NASDAQ Composite graph data:', error.message);
+  }
+
+  try {
+    // Dow Jones Industrial Average
+    const graphResponse2 = await axios.get(`${process.env.API_BASE_URL}/stock-index/3/data?months=3`, { httpsAgent: agent });
+    Graph2 = graphResponse2.data.graph;
+  } catch (error) {
+    console.error('Error fetching Dow Jones graph data:', error.message);
+  }
+
+  try {
+    // S&P 500
+    const graphResponse3 = await axios.get(`${process.env.API_BASE_URL}/stock-index/4/data?months=3`, { httpsAgent: agent });
+    Graph3 = graphResponse3.data.graph;
+  } catch (error) {
+    console.error('Error fetching S&P 500 graph data:', error.message);
+  }
+
+  try {
+    // Russell 2000
+    const graphResponse4 = await axios.get(`${process.env.API_BASE_URL}/stock-index/5/data?months=3`, { httpsAgent: agent });
+    Graph4 = graphResponse4.data.graph;
+  } catch (error) {
+    console.error('Error fetching Russell 2000 graph data:', error.message);
+  }
+
+  res.render('stock_index', { 
+    Graph1,
+    Graph2,
+    Graph3,
+    Graph4
   });
 });
 
