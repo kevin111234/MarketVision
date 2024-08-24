@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 
   try {
     // S&P 500 그래프 데이터를 FastAPI에서 가져옴 (3개월 데이터를 기본으로 가져옴)
-    const graphResponse = await axios.get(`${process.env.API_BASE_URL}/stock-index/1/data?months=1`, { httpsAgent: agent });
+    const graphResponse = await axios.get(`${process.env.API_BASE_URL}/stock-index/4/data?months=1`, { httpsAgent: agent });
     sp500Graph = graphResponse.data.graph;
   } catch (error) {
     console.error('Error fetching S&P 500 graph data:', error.message);
@@ -44,6 +44,49 @@ router.get('/', async (req, res) => {
     news, 
     exchangeRate,
     sp500Graph
+  });
+});
+
+router.get('/market-indicators', async (req, res) => {
+  let Graph1 = null, Graph2 = null, Graph3 = null, Graph4 = null;
+
+  try {
+    // NASDAQ Composite
+    const graphResponse1 = await axios.get(`${process.env.API_BASE_URL}/stock-index/1/data?months=3`, { httpsAgent: agent });
+    Graph1 = graphResponse1.data.graph;
+  } catch (error) {
+    console.error('Error fetching NASDAQ Composite graph data:', error.message);
+  }
+
+  try {
+    // Dow Jones Industrial Average
+    const graphResponse2 = await axios.get(`${process.env.API_BASE_URL}/stock-index/3/data?months=3`, { httpsAgent: agent });
+    Graph2 = graphResponse2.data.graph;
+  } catch (error) {
+    console.error('Error fetching Dow Jones graph data:', error.message);
+  }
+
+  try {
+    // S&P 500
+    const graphResponse3 = await axios.get(`${process.env.API_BASE_URL}/stock-index/4/data?months=3`, { httpsAgent: agent });
+    Graph3 = graphResponse3.data.graph;
+  } catch (error) {
+    console.error('Error fetching S&P 500 graph data:', error.message);
+  }
+
+  try {
+    // Russell 2000
+    const graphResponse4 = await axios.get(`${process.env.API_BASE_URL}/stock-index/5/data?months=3`, { httpsAgent: agent });
+    Graph4 = graphResponse4.data.graph;
+  } catch (error) {
+    console.error('Error fetching Russell 2000 graph data:', error.message);
+  }
+
+  res.render('stock_index', { 
+    Graph1,
+    Graph2,
+    Graph3,
+    Graph4
   });
 });
 
