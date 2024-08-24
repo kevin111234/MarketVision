@@ -15,18 +15,24 @@ const agent = new https.Agent({
 
 router.get('/', async (req, res) => {
   let news = [];
-  let graphData1 = null, graphData2 = null, graphData3 = null, graphData4 = null;
+  let sp500Graph = null;
   let exchangeRate = null;
 
   try {
-    // FastAPI에서 뉴스 데이터를 가져옴
+    // S&P 500 그래프 데이터를 FastAPI에서 가져옴 (3개월 데이터를 기본으로 가져옴)
+    const graphResponse = await axios.get(`${process.env.API_BASE_URL}/stock-index/1/data?months=1`, { httpsAgent: agent });
+    sp500Graph = graphResponse.data.graph;
+  } catch (error) {
+    console.error('Error fetching S&P 500 graph data:', error.message);
+  }
+
+  try {
     const newsResponse = await axios.get(newsUrl, { httpsAgent: agent });
     news = newsResponse.data;
   } catch (error) {
     console.error('Error fetching news:', error.message);
   }
 
-  // FastAPI에서 환율 데이터를 가져옴
   try {
     const exchangeRateResponse = await axios.get(exchangeRateUrl, { httpsAgent: agent });
     exchangeRate = exchangeRateResponse.data.exchange_rate;
@@ -34,10 +40,10 @@ router.get('/', async (req, res) => {
     console.error('Error fetching exchange rate:', error.message);
   }
 
-  // dashboard 페이지 렌더링, 뉴스와 그래프 데이터, 환율 정보를 전달
   res.render('dashboard', { 
     news, 
-    exchangeRate
+    exchangeRate,
+    sp500Graph
   });
 });
 

@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}MarketVision 메인 화면{% endblock %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
 
 <div class="container">
@@ -19,12 +19,13 @@
       <div class="card card-body m-2">
         <h2>S&P 500</h2>
         <div id="sp500-graph" class="graph-container"></div>
-        {% if sp500Data %}
-          <p>최신 지수: {{ sp500Data.close }}</p>
-          <p>날짜: {{ sp500Data.date }}</p>
-        {% else %}
-          <p>현재 S&P 500 데이터를 가져올 수 없습니다.</p>
-        {% endif %}
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var graphData = JSON.parse('{{ sp500Graph | safe }}');
+            var sp500GraphDiv = document.getElementById('sp500-graph');
+            Plotly.newPlot(sp500GraphDiv, graphData.data, graphData.layout);
+          });
+        </script>
       </div>
       <div class="card card-body m-2">
         <h2>Favorite Stocks</h2>
@@ -39,7 +40,7 @@
     <div class="col-md-4">
       <div class="card card-body m-2">
         <h2>Latest News</h2>
-        {% if news and news|length > 0 %}
+        {% if news and news.length > 0 %}
           <ul class="list-group">
             {% for item in news %}
               <li class="list-group-item">
