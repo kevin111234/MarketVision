@@ -2,84 +2,95 @@
 {% block title %}MarketVision 메인 화면{% endblock %}
 {% block content %}
 
-<div class="container-fluid">
+<div class="container">
   <h2 id="dashboard" class="text-center card bg-light m-3 p-2">시장지표 상세보기</h2>
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-10 m-3 p-3 card">
-            <div id="stockIndexGraph1" class="graph-container"></div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var graphData = JSON.parse('{{ Graph1 | safe }}');
-                    graphData.layout.title = 'NASDAQ Composite (3개월)';
-                    graphData.layout.xaxis.title = '';  // x축 제목 제거
-                    graphData.layout.yaxis.title = '';  // y축 제목 제거
-                    var graphDiv = document.getElementById('stockIndexGraph1');
-                    Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
-                });
-            </script>
-            <div class="card-body text-center">
-                <h4>NASDAQ Composite</h4>
-                <p>미국의 기술 중심 주식 시장 지표로, 기술 산업의 상태를 잘 반영합니다.</p>
-            </div>
+  
+  <div class="row">
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card p-3 h-100">
+        <div id="stockIndexGraph1" class="graph-container"></div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var graphData = JSON.parse('{{ Graph1 | safe }}');
+            graphData.layout.title = 'NASDAQ Composite (3개월)';
+            graphData.layout.xaxis.title = '';  // x축 제목 제거
+            graphData.layout.yaxis.title = '';  // y축 제목 제거
+            var graphDiv = document.getElementById('stockIndexGraph1');
+            Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
+          });
+        </script>
+        <div class="card-body text-center">
+          <h4>NASDAQ Composite</h4>
+          <p>미국의 기술 중심 주식 시장 지표로, 기술 산업의 상태를 잘 반영합니다.</p>
         </div>
-        <div class="col-lg-5 col-md-10 m-3 p-3 card">
-            <div id="stockIndexGraph2" class="graph-container"></div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var graphData = JSON.parse('{{ Graph2 | safe }}');
-                    graphData.layout.title = 'Dow Jones Industrial Average (3개월)';
-                    graphData.layout.xaxis.title = '';  // x축 제목 제거
-                    graphData.layout.yaxis.title = '';  // y축 제목 제거
-                    var graphDiv = document.getElementById('stockIndexGraph2');
-                    Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
-                });
-            </script>
-            <div class="card-body text-center">
-                <h4>Dow Jones Industrial Average</h4>
-                <p>미국의 30개 대형 상장기업으로 구성된 주식 시장 지표입니다. 산업, 금융 등 다양한 분야의 대기업들을 포함하며, 미국 경제 전반을 대표하는 지표로 자주 사용됩니다.</p>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-10 m-3 p-3 card">
-            <div id="stockIndexGraph3" class="graph-container"></div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var graphData = JSON.parse('{{ Graph3 | safe }}');
-                    graphData.layout.title = 'S&P 500 (3개월)';
-                    graphData.layout.xaxis.title = '';  // x축 제목 제거
-                    graphData.layout.yaxis.title = '';  // y축 제목 제거
-                    var graphDiv = document.getElementById('stockIndexGraph3');
-                    Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
-                });
-            </script>
-            <div class="card-body text-center">
-                <h4>S&P 500</h4>
-                <p>미국의 500개 대형 기업으로 구성된 광범위한 주식 시장 지표입니다. 이 지수는 다양한 산업 분야를 포괄하며, 미국 주식 시장의 전반적인 건강 상태를 나타내는 데 사용됩니다.</p>
-            </div>
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card p-3 h-100">
+        <div id="stockIndexGraph2" class="graph-container"></div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var graphData = JSON.parse('{{ Graph2 | safe }}');
+            graphData.layout.title = 'Dow Jones Industrial Average (3개월)';
+            graphData.layout.xaxis.title = '';  // x축 제목 제거
+            graphData.layout.yaxis.title = '';  // y축 제목 제거
+            var graphDiv = document.getElementById('stockIndexGraph2');
+            Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
+          });
+        </script>
+        <div class="card-body text-center">
+          <h4>Dow Jones Industrial Average</h4>
+          <p>미국의 30개 대형 상장기업으로 구성된 주식 시장 지표입니다. 산업, 금융 등 다양한 분야의 대기업들을 포함하며, 미국 경제 전반을 대표하는 지표로 자주 사용됩니다.</p>
         </div>
-        <div class="col-lg-5 col-md-10 m-3 p-3 card">
-            <div id="stockIndexGraph4" class="graph-container"></div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var graphData = JSON.parse('{{ Graph4 | safe }}');
-                    graphData.layout.title = 'Russell 2000 (3개월)';
-                    graphData.layout.xaxis.title = '';  // x축 제목 제거
-                    graphData.layout.yaxis.title = '';  // y축 제목 제거
-                    var graphDiv = document.getElementById('stockIndexGraph4');
-                    Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
-                });
-            </script>
-            <div class="card-body text-center">
-                <h4>Russell 2000</h4>
-                <p>미국의 중소형주로 구성된 주식 시장 지표로, 대기업이 아닌 중소기업의 성과를 반영합니다. 주로 중소형주의 성장 잠재력에 관심 있는 투자자들이 참고하는 지표입니다.</p>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card p-3 h-100">
+        <div id="stockIndexGraph3" class="graph-container"></div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var graphData = JSON.parse('{{ Graph3 | safe }}');
+            graphData.layout.title = 'S&P 500 (3개월)';
+            graphData.layout.xaxis.title = '';  // x축 제목 제거
+            graphData.layout.yaxis.title = '';  // y축 제목 제거
+            var graphDiv = document.getElementById('stockIndexGraph3');
+            Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
+          });
+        </script>
+        <div class="card-body text-center">
+          <h4>S&P 500</h4>
+          <p>미국의 500개 대형 기업으로 구성된 광범위한 주식 시장 지표입니다. 이 지수는 다양한 산업 분야를 포괄하며, 미국 주식 시장의 전반적인 건강 상태를 나타내는 데 사용됩니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 mb-4">
+      <div class="card p-3 h-100">
+        <div id="stockIndexGraph4" class="graph-container"></div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            var graphData = JSON.parse('{{ Graph4 | safe }}');
+            graphData.layout.title = 'Russell 2000 (3개월)';
+            graphData.layout.xaxis.title = '';  // x축 제목 제거
+            graphData.layout.yaxis.title = '';  // y축 제목 제거
+            var graphDiv = document.getElementById('stockIndexGraph4');
+            Plotly.newPlot(graphDiv, graphData.data, graphData.layout);
+          });
+        </script>
+        <div class="card-body text-center">
+          <h4>Russell 2000</h4>
+          <p>미국의 중소형주로 구성된 주식 시장 지표로, 대기업이 아닌 중소기업의 성과를 반영합니다. 주로 중소형주의 성장 잠재력에 관심 있는 투자자들이 참고하는 지표입니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <style>
-    .container-fluid {
+    .container {
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -96,10 +107,17 @@
     .card {
         background-color: #f8f9fa;
         border: 1px solid #dee2e6;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    .m-3 {
-        margin: 1.5rem !important;
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .h-100 {
+        height: 100%;
     }
 </style>
 
