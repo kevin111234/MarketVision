@@ -6,104 +6,54 @@
   <h1 id="dashboard" class="text-center card bg-light m-4">Dashboard</h1>
 
   <div class="row">
-    <div class="col-md-8 main-content">
-      <div class="row">
-        <div class="col-md-6 p-3 card">
-          <div id="stockIndexGraph1" class="graph-container"></div>
-          <div class="card-body">
-            <h4>NASDAQ Composite</h4>
-            <p>미국의 기술 중심 주식 시장 지표로, 기술 산업의 상태를 잘 반영합니다.</p>
-          </div>
-        </div>
-        <div class="col-md-6 p-3 card">
-          <div id="stockIndexGraph2" class="graph-container"></div>
-          <div class="card-body">
-            <h4>Dow Jones Industrial Average</h4>
-            <p>미국의 30개 대형 상장기업으로 구성된 주식 시장 지표입니다. 산업, 금융 등 다양한 분야의 대기업들을 포함하며, 미국 경제 전반을 대표하는 지표로 자주 사용됩니다.</p>
-          </div>
-        </div>
+    <!-- 중앙과 왼쪽 콘텐츠 -->
+    <div class="col-md-8">
+      <div class="card card-body m-2">
+        <h2>환율 정보</h2>
+        {% if exchangeRate %}
+          <p>USD/KRW: {{ exchangeRate }}</p>
+        {% else %}
+          <p>현재 환율 데이터를 가져올 수 없습니다.</p>
+        {% endif %}
       </div>
-      <div class="row mt-4">
-        <div class="col-md-6 p-3 card">
-          <div id="stockIndexGraph3" class="graph-container"></div>
-          <div class="card-body">
-            <h4>S&P 500</h4>
-            <p>미국의 500개 대형 기업으로 구성된 광범위한 주식 시장 지표입니다. 이 지수는 다양한 산업 분야를 포괄하며, 미국 주식 시장의 전반적인 건강 상태를 나타내는 데 사용됩니다.</p>
-          </div>
-        </div>
-        <div class="col-md-6 p-3 card">
-          <div id="stockIndexGraph4" class="graph-container"></div>
-          <div class="card-body">
-            <h4>Russell 2000</h4>
-            <p>미국의 중소형주로 구성된 주식 시장 지표로, 대기업이 아닌 중소기업의 성과를 반영합니다. 주로 중소형주의 성장 잠재력에 관심 있는 투자자들이 참고하는 지표입니다.</p>
-          </div>
-        </div>
+      <div class="card card-body m-2">
+        <h2>S&P 500</h2>
+        <div id="sp500-graph" class="graph-container"></div>
+        {% if sp500Data %}
+          <p>최신 지수: {{ sp500Data.close }}</p>
+          <p>날짜: {{ sp500Data.date }}</p>
+        {% else %}
+          <p>현재 S&P 500 데이터를 가져올 수 없습니다.</p>
+        {% endif %}
+      </div>
+      <div class="card card-body m-2">
+        <h2>Favorite Stocks</h2>
+        <p>주가 변동 정보</p>
+      </div>
+      <div class="text-center">
+        <a href="/market-indicators" class="btn btn-primary">더 많은 시장지표 보기</a>
       </div>
     </div>
 
+    <!-- 오른쪽 뉴스 콘텐츠 -->
     <div class="col-md-4">
-      <h2>Latest Exchange Rate</h2>
-      <p>USD/KRW: {{ exchangeRate }}</p>
-      
-      <h2>Latest News</h2>
-      {% if news and news|length > 0 %}
-        <ul class="list-group">
-          {% for item in news %}
-            <li class="list-group-item">
-              <a href="{{ item.link }}" class="list-group-item-action" target="_blank">
-                {{ item.title }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>현재 표시할 뉴스가 없습니다.</p>
-      {% endif %}
+      <div class="card card-body m-2">
+        <h2>Latest News</h2>
+        {% if news and news|length > 0 %}
+          <ul class="list-group">
+            {% for item in news %}
+              <li class="list-group-item">
+                <a href="{{ item.link }}" class="list-group-item-action" target="_blank">
+                  {{ item.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>현재 표시할 뉴스가 없습니다.</p>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
-
-<!-- Plotly.js 라이브러리 추가 -->
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-<!-- 그래프 렌더링 스크립트 -->
-<script>
-  // 서버에서 전달받은 그래프 데이터
-  var graphDataArray = JSON.parse('{{ graphDataArray | safe }}');
-  
-  graphDataArray.forEach((graphData, index) => {
-    const graphContainer = document.getElementById(`stockIndexGraph${index + 1}`);
-    if (graphData && graphData.graph) {
-      try {
-        var figure = JSON.parse(graphData.graph);
-        // Plotly를 사용하여 그래프 렌더링
-        Plotly.newPlot(graphContainer, figure.data, figure.layout);
-      } catch (error) {
-        console.error(`Error parsing graph data for index ${index + 1}:`, error);
-        showNoDataMessage(index + 1);
-      }
-    } else {
-      showNoDataMessage(index + 1);
-    }
-  });
-
-  function showNoDataMessage(index) {
-    // 데이터가 없을 경우 메시지 표시
-    const graphContainer = document.getElementById(`stockIndexGraph${index}`);
-    graphContainer.innerHTML = '<p class="no-data-message">현재 표시할 주식 지표 데이터가 없습니다.</p>';
-  }
-</script>
-
-<style>
-  .graph-container {
-    height: 300px;
-    margin-bottom: 20px;
-  }
-  .no-data-message {
-    text-align: center;
-    padding: 20px;
-    color: #888;
-  }
-</style>
-
 {% endblock %}
