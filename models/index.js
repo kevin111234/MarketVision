@@ -16,8 +16,6 @@ const Stock = require('./Stock')(sequelize);
 const HistoricalStockData = require('./HistoricalStockData')(sequelize);
 const StockIndex = require('./StockIndex')(sequelize);
 const HistoricalStockIndexData = require('./HistoricalStockIndexData')(sequelize);
-const Commodity = require('./Commodity')(sequelize);
-const HistoricalCommodityData = require('./HistoricalCommodityData')(sequelize);
 const ExchangeRate = require('./ExchangeRate')(sequelize);
 const DollarIndex = require('./DollarIndex')(sequelize);
 
