@@ -7,6 +7,7 @@ const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const authRouter = require('./routes/auth');
 const dashboardRouter = require('./routes/dashboard');
+const detailRouter = require('./routes/stockDetail');
 const errorHandler = require('./errorHandler');
 const applyMiddleware = require('./middleware/middleware');
 const passportConfig = require('./passport');
@@ -40,7 +41,8 @@ sequelize.sync({ force: false })  // force: true로 설정하면 기존 테이�
 app.use('/', indexRouter);
 app.use('api/', apiRouter);
 app.use('/auth', authRouter);
-app.use('/dashboard', dashboardRouter)
+app.use('/dashboard', dashboardRouter);
+app.use('/details', detailRouter);
 
 // error handler
 app.use(errorHandler.notFound);

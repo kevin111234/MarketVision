@@ -9,8 +9,8 @@ const exchangeRateUrl = process.env.EXCHANGE_RATE_URL;
 
 // HTTPS 에이전트 설정
 const agent = new https.Agent({
-    rejectUnauthorized: false,  // 인증서 검증 비활성화 (개발 환경에서만 사용)
-    secureProtocol: 'TLSv1_2_method'  // TLS 버전 명시적으로 설정
+  rejectUnauthorized: true,  // 인증서 검증 활성화 (운영 환경에서는 반드시 true)
+  secureProtocol: 'TLSv1_2_method'  // 최신 TLS 버전 사용
 });
 
 router.get('/', async (req, res) => {
