@@ -24,9 +24,9 @@
         <div id="stock-graph" class="graph-container"></div>
         <script>
           document.addEventListener('DOMContentLoaded', function() {
-                  var graphData = JSON.parse(`{{ stockGraph | safe }}`);
-                  var stockGraphDiv = document.getElementById('stock-graph');
-                  Plotly.newPlot(stockGraphDiv, graphData.data, graphData.layout);
+            var graphData = JSON.parse(`{{ stockGraph | safe }}`);
+            var stockGraphDiv = document.getElementById('stock-graph');
+            Plotly.newPlot(stockGraphDiv, graphData.data, graphData.layout);
           });
         </script>
       </div>
